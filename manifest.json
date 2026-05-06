@@ -1,0 +1,41 @@
+{
+  "manifestVersion": 1,
+  "cores": [
+    {
+      "id": "mgba",
+      "displayName": "mGBA",
+      "system": "gb/gbc/gba",
+      "fileName": "libmgba_libretro.so",
+      "version": "2026.05.06",
+      "downloadUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/libmgba_libretro.so",
+      "sourceUrl": "https://example.com/mgba-src.tar.gz",
+      "licenseUrl": "https://example.com/LICENSES.txt",
+      "sha256": "65a416ec71282ac62f3ce7a164a03ad085f26c53ea9b040988ea997bd60e8c22",
+      "sizeBytes": 3071272
+    },
+    {
+      "id": "fceumm",
+      "displayName": "FCEUmm",
+      "system": "nes",
+      "fileName": "libfceumm_libretro.so",
+      "version": "2026.05.06",
+      "downloadUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/libfceumm_libretro.so",
+      "sourceUrl": "https://example.com/fceumm-src.tar.gz",
+      "licenseUrl": "https://example.com/LICENSES.txt",
+      "sha256": "39ebdeef4b1c6b201a3fb79c5f3697a227e3aa4585c4d19fc126a585aee15092",
+      "sizeBytes": 2830120
+    },
+    {
+      "id": "vice",
+      "displayName": "VICE x64",
+      "system": "c64",
+      "fileName": "libvice_x64_libretro.so",
+      "version": "2026.05.06",
+      "downloadUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/libvice_x64_libretro.so",
+      "sourceUrl": "https://example.com/vice-src.tar.gz",
+      "licenseUrl": "https://example.com/LICENSES.txt",
+      "sha256": "5b5683b72d5f7f940ddb2d0d33e6bfecc7432d1b05f71b6d664d96d945201876",
+      "sizeBytes": 3751600
+    }
+  ]
+}
