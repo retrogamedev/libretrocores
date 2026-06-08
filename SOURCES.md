@@ -103,6 +103,28 @@ All binaries and source archives are version **1.0**.
             APP_LDFLAGS="-Wl,-z,max-page-size=16384"
   ```
 
+## Gearsystem — `libgearsystem_libretro.so`
+
+- **Upstream:** https://github.com/drhelius/Gearsystem
+- **License:** GNU General Public License version 3 — see
+  [LICENSE-gearsystem.txt](LICENSE-gearsystem.txt).
+- **Source commit:** [`018c248`](https://github.com/drhelius/Gearsystem/commit/018c248)
+  (Gearsystem 3.9.9, +9 commits)
+- **Source archive:**
+  [source/libgearsystem_libretro-v1.0.tar.gz](source/libgearsystem_libretro-v1.0.tar.gz)
+- **Local patches:** none. Built unmodified from upstream.
+- **Reproduce the build** (from the extracted source root):
+  ```
+  ndk-build -C platforms/libretro/jni \
+            NDK_PROJECT_PATH=platforms/libretro \
+            APP_ABI=arm64-v8a \
+            APP_PLATFORM=android-24 \
+            APP_LDFLAGS="-Wl,-z,max-page-size=16384"
+  ```
+  (ndk-build strips for release automatically. Output is
+  `platforms/libretro/libs/arm64-v8a/libretro.so`, renamed to
+  `libgearsystem_libretro.so`.)
+
 ## Manifest schema (`manifest.json`)
 
 ```json

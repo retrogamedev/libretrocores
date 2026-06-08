@@ -36,6 +36,18 @@
       "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-vice.txt",
       "sha256": "a305af5a7b435c65126c9d1ff9f3fcdb1a7fdd5416c0cad6304783e4da99724f",
       "sizeBytes": 3751600
+    },
+    {
+      "id": "gearsystem",
+      "displayName": "Gearsystem",
+      "system": "sms/gg/sg",
+      "fileName": "libgearsystem_libretro.so",
+      "version": "1.0",
+      "downloadUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/libgearsystem_libretro.so",
+      "sourceUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/source/libgearsystem_libretro-v1.0.tar.gz",
+      "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-gearsystem.txt",
+      "sha256": "54198e478dbd3c5f53893e2a69d7f45034e359ff8604a1cb119c2cb111360dbd",
+      "sizeBytes": 806536
     }
   ]
 }
