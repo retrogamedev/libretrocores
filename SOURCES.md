@@ -125,6 +125,31 @@ All binaries and source archives are version **1.0**.
   `platforms/libretro/libs/arm64-v8a/libretro.so`, renamed to
   `libgearsystem_libretro.so`.)
 
+## bsnes-mercury balanced — `libbsnes_mercury_balanced_libretro.so`
+
+- **Upstream:** https://github.com/libretro/bsnes-mercury
+- **License:** GNU General Public License version 3 — see
+  [LICENSE-bsnes.txt](LICENSE-bsnes.txt).
+- **Source commit:** [`ac0b6b1`](https://github.com/libretro/bsnes-mercury/commit/ac0b6b1)
+- **Source archive:**
+  [source/libbsnes_mercury_balanced_libretro-v1.0.tar.gz](source/libbsnes_mercury_balanced_libretro-v1.0.tar.gz)
+- **Local patches:** none. Built unmodified from upstream.
+- **Profile:** built with `PROFILE=balanced` (scanline-precision PPU). The
+  jni `Android.mk` defaults to `performance`, so the profile must be passed
+  explicitly or you'll get the wrong core.
+- **Reproduce the build** (from the extracted source root):
+  ```
+  ndk-build -C target-libretro/jni \
+            NDK_PROJECT_PATH=target-libretro \
+            APP_ABI=arm64-v8a \
+            APP_PLATFORM=android-24 \
+            APP_LDFLAGS="-Wl,-z,max-page-size=16384" \
+            PROFILE=balanced
+  ```
+  (ndk-build strips for release automatically. Output is
+  `target-libretro/libs/arm64-v8a/libretro.so`, renamed to
+  `libbsnes_mercury_balanced_libretro.so`.)
+
 ## Manifest schema (`manifest.json`)
 
 ```json

@@ -48,6 +48,18 @@
       "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-gearsystem.txt",
       "sha256": "54198e478dbd3c5f53893e2a69d7f45034e359ff8604a1cb119c2cb111360dbd",
       "sizeBytes": 806536
+    },
+    {
+      "id": "bsnes",
+      "displayName": "bsnes-mercury balanced",
+      "system": "snes",
+      "fileName": "libbsnes_mercury_balanced_libretro.so",
+      "version": "1.0",
+      "downloadUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/libbsnes_mercury_balanced_libretro.so",
+      "sourceUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/source/libbsnes_mercury_balanced_libretro-v1.0.tar.gz",
+      "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-bsnes.txt",
+      "sha256": "e4bfed1428c91fd2608160c151508464bf9f86038f13ab57b4e02382e065c8bf",
+      "sizeBytes": 1893080
     }
   ]
 }
