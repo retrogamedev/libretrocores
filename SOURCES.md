@@ -150,6 +150,54 @@ All binaries and source archives are version **1.0**.
   `target-libretro/libs/arm64-v8a/libretro.so`, renamed to
   `libbsnes_mercury_balanced_libretro.so`.)
 
+## Mupen64Plus-Next + ParaLLEl-RDP — `libmupen64plus_next_libretro.so`
+
+- **Upstream:** https://github.com/libretro/mupen64plus-libretro-nx
+  (cloned with submodules — parallel-rdp / parallel-rsp).
+- **License:** GNU General Public License version 3 — see
+  [LICENSE-mupen64.txt](LICENSE-mupen64.txt). The mupen64plus core itself is
+  GPLv2, but the libretro-nx bundle links additional GPLv3 plugins, so the
+  combined binary is GPLv3.
+- **Source commit:** [`98c1b0d`](https://github.com/libretro/mupen64plus-libretro-nx/commit/98c1b0d877542b01314b3b04272282ba223b65b3)
+- **Source archive:**
+  [source/libmupen64plus_next_libretro-v1.0.tar.gz](source/libmupen64plus_next_libretro-v1.0.tar.gz)
+- **Local patches:** **already applied in the source archive.** Three
+  patches; the tarball is a buildable standalone snapshot matching the
+  shipped binary. Search the source for `RGDVR` to locate the inline one.
+  The patches are summarised below for transparency.
+
+  1. `libretro/libretro.c` — appends a `retro_swap_rom()` entry point for
+     in-process N64->N64 content switching. mupen64plus + parallel-RDP
+     cannot be deinit'd / re-init'd in one process, so switching ROMs needs
+     a true content swap (stop + close + open) with parallel left alive,
+     rather than a full core teardown.
+
+  2. `mupen64plus-video-paraLLEl/rdp.cpp` — fixes the re-init teardown
+     order in `RDP::init()`. It builds a new `Device` without first
+     releasing the objects owned by the old one (the CommandProcessor /
+     frontend, cached frame images, and timestamp query pools), which on a
+     second init outlive their Device and abort. The patch releases all
+     old-Device objects before `device.reset(new Device)`. One-line
+     insertion, no-op on first init.
+
+  3. `libretro-common/libco/aarch64.c` — full-file replacement adding the
+     callee-saved FP registers `d8`-`d15` to `co_switch_aarch64`. Upstream
+     saves `x19`-`x29` but not `d8`-`d15` (which AAPCS64 requires preserved
+     across a call), so a `double` / NEON local held across `retro_run()`'s
+     co-switch is corrupted on return.
+
+- **Reproduce the build** (from the extracted source root):
+  ```
+  ndk-build -C libretro/jni \
+            NDK_PROJECT_PATH=libretro \
+            APP_ABI=arm64-v8a \
+            APP_PLATFORM=android-24 \
+            APP_LDFLAGS="-Wl,-z,max-page-size=16384"
+  ```
+  (ndk-build strips for release automatically. Output is
+  `libretro/libs/arm64-v8a/libretro.so`, renamed to
+  `libmupen64plus_next_libretro.so`.)
+
 ## Manifest schema (`manifest.json`)
 
 ```json
