@@ -17,6 +17,7 @@ All binaries and source archives in this repository are version **1.0**.
 | `libgearsystem_libretro.so` | Sega Master System, Game Gear | GPL v3 | [drhelius/Gearsystem](https://github.com/drhelius/Gearsystem) |
 | `libbsnes_mercury_balanced_libretro.so` | Super Nintendo (SNES) | GPL v3 | [libretro/bsnes-mercury](https://github.com/libretro/bsnes-mercury) |
 | `libmupen64plus_next_libretro.so` | Nintendo 64 | GPL v3 | [libretro/mupen64plus-libretro-nx](https://github.com/libretro/mupen64plus-libretro-nx) |
+| `libpcsx_rearmed_libretro.so` | PlayStation (PS1) | GPL v2 | [libretro/pcsx_rearmed](https://github.com/libretro/pcsx_rearmed) |
 
 All binaries are built for Android **arm64-v8a** (Meta Quest 3 / 3S / Pro). They
 are not portable to other platforms.
@@ -28,11 +29,11 @@ are not portable to other platforms.
   URL. See [SOURCES.md](SOURCES.md) for the schema.
 - `lib*_libretro.so` — the core binaries.
 - `LICENSE-mgba.txt`, `LICENSE-fceumm.txt`, `LICENSE-vice.txt`,
-  `LICENSE-gearsystem.txt`, `LICENSE-bsnes.txt`, `LICENSE-mupen64.txt` — full
-  license text for each core.
+  `LICENSE-gearsystem.txt`, `LICENSE-bsnes.txt`, `LICENSE-mupen64.txt`,
+  `LICENSE-pcsx.txt` — full license text for each core.
 - `source/lib*_libretro-v1.0.tar.gz` — complete corresponding source for
-  each binary at the commit it was built from. For VICE and
-  Mupen64Plus-Next, the project's build-time patches are pre-applied so the
+  each binary at the commit it was built from. For VICE, Mupen64Plus-Next
+  and PCSX-ReARMed, the project's build-time patches are pre-applied so the
   tarball is a buildable standalone snapshot.
 - `SOURCES.md` — upstream pointers, the exact commit each tarball was
   produced from, the VICE patches (with rationale), and reproduce-the-
@@ -47,7 +48,7 @@ For mGBA (MPL 2.0) the source is included for parity even though MPL's
 source-availability requirements are file-level rather than whole-program.
 
 See [SOURCES.md](SOURCES.md) for upstream URLs, exact commits, and the
-VICE and Mupen64Plus-Next patch sets.
+VICE, Mupen64Plus-Next and PCSX-ReARMed patch sets.
 
 ## Building
 

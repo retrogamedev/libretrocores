@@ -198,6 +198,40 @@ All binaries and source archives are version **1.0**.
   `libretro/libs/arm64-v8a/libretro.so`, renamed to
   `libmupen64plus_next_libretro.so`.)
 
+## PCSX-ReARMed — `libpcsx_rearmed_libretro.so`
+
+- **Upstream:** https://github.com/libretro/pcsx_rearmed
+  (cloned with submodules — `frontend/libpicofe`).
+- **License:** GNU General Public License version 2 — see
+  [LICENSE-pcsx.txt](LICENSE-pcsx.txt).
+- **Source commit:** [`d26eaee5`](https://github.com/libretro/pcsx_rearmed/commit/d26eaee5c8fb47c1832b8bf32c1358d625da8a02)
+- **Source archive:**
+  [source/libpcsx_rearmed_libretro-v1.0.tar.gz](source/libpcsx_rearmed_libretro-v1.0.tar.gz)
+- **Local patches:** **already applied in the source archive.** One patch;
+  the tarball is a buildable standalone snapshot matching the shipped binary.
+  Search the source for `RGDVR` to locate it.
+
+  1. `libpcsxcore/pad.c` — auto-enable DualShock analog mode for all games.
+     The emulated DualShock boots in digital mode and PCSX only auto-switches
+     to analog for games that probe the controller config protocol (many,
+     including Gran Turismo 2, never do), leaving the analog sticks dead. The
+     patch drops the `configModeUsed` gate on PCSX's own auto-analog path so
+     every game switches to analog ~16 polls after boot. One-line change to the
+     auto-analog condition, anchored on `CMD_READ_DATA_AND_VIBRATE` so it only
+     touches the auto-analog check, not the identical idle-timeout check above it.
+
+- **Reproduce the build** (from the extracted source root):
+  ```
+  ndk-build -C jni \
+            NDK_PROJECT_PATH=. \
+            APP_ABI=arm64-v8a \
+            APP_PLATFORM=android-24 \
+            APP_LDFLAGS="-Wl,-z,max-page-size=16384"
+  ```
+  (ndk-build strips for release automatically. The arm64-v8a build pulls in the
+  native MIPS dynarec + libchdr. Output is `libs/arm64-v8a/libretro.so`, renamed
+  to `libpcsx_rearmed_libretro.so`.)
+
 ## Manifest schema (`manifest.json`)
 
 ```json

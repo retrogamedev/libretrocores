@@ -72,6 +72,18 @@
       "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-mupen64.txt",
       "sha256": "1806e37c1cbe71e75522e7c860c85f5afd928d8edb3148424c32feef1ac9f1c5",
       "sizeBytes": 6249776
+    },
+    {
+      "id": "pcsx_rearmed",
+      "displayName": "PCSX-ReARMed",
+      "system": "ps1",
+      "fileName": "libpcsx_rearmed_libretro.so",
+      "version": "1.0",
+      "downloadUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/libpcsx_rearmed_libretro.so",
+      "sourceUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/source/libpcsx_rearmed_libretro-v1.0.tar.gz",
+      "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-pcsx.txt",
+      "sha256": "1c35051a58d517cd7fded24bed8de59e6aefa30a05c64cbdf7110ac35a074fe3",
+      "sizeBytes": 1579280
     }
   ]
 }
