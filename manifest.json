@@ -66,12 +66,12 @@
       "displayName": "Mupen64Plus-Next",
       "system": "n64",
       "fileName": "libmupen64plus_next_libretro.so",
-      "version": "1.0",
+      "version": "1.1",
       "downloadUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/libmupen64plus_next_libretro.so",
       "sourceUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/source/libmupen64plus_next_libretro-v1.0.tar.gz",
       "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-mupen64.txt",
-      "sha256": "1806e37c1cbe71e75522e7c860c85f5afd928d8edb3148424c32feef1ac9f1c5",
-      "sizeBytes": 6249776
+      "sha256": "8af3185fa284587a02adcf4bf7f5ed2136ae4eb037c0eafc23df1547d9c4e77f",
+      "sizeBytes": 6249856
     },
     {
       "id": "pcsx_rearmed",
