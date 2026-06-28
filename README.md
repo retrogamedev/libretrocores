@@ -5,7 +5,10 @@ downloaded at runtime by **RetroGameDev VR** on Meta Quest. The app fetches
 `manifest.json` on launch and pulls each core from this repository the first
 time a user plays a ROM that needs it.
 
-All binaries and source archives in this repository are version **1.0**.
+Each core is versioned independently; see the `version` field per core in
+`manifest.json` for the current release. Source archives keep their original
+`-v1.0` filename across rebuilds (the file is updated in place to match the
+current binary).
 
 ## Cores included
 

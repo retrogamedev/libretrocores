@@ -207,9 +207,9 @@ All binaries and source archives are version **1.0**.
 - **Source commit:** [`d26eaee5`](https://github.com/libretro/pcsx_rearmed/commit/d26eaee5c8fb47c1832b8bf32c1358d625da8a02)
 - **Source archive:**
   [source/libpcsx_rearmed_libretro-v1.0.tar.gz](source/libpcsx_rearmed_libretro-v1.0.tar.gz)
-- **Local patches:** **already applied in the source archive.** One patch;
+- **Local patches:** **already applied in the source archive.** Two patches;
   the tarball is a buildable standalone snapshot matching the shipped binary.
-  Search the source for `RGDVR` to locate it.
+  Search the source for `RGDVR` to locate them.
 
   1. `libpcsxcore/pad.c` — auto-enable DualShock analog mode for all games.
      The emulated DualShock boots in digital mode and PCSX only auto-switches
@@ -219,6 +219,15 @@ All binaries and source archives are version **1.0**.
      every game switches to analog ~16 polls after boot. One-line change to the
      auto-analog condition, anchored on `CMD_READ_DATA_AND_VIBRATE` so it only
      touches the auto-analog check, not the identical idle-timeout check above it.
+
+  2. `frontend/libretro-version-script` — export the `CdromId` symbol. The
+     linker version-script restricts the dynamic symbol table to `retro_*`,
+     hiding everything else, so the host's `dlsym("CdromId")` fails. The patch
+     adds `CdromId` to the `global:` list so the host can read the loaded
+     disc's serial (SLES/SLUS/SCES/...) for per-game light-gun configuration.
+     `CdromId` is referenced internally so it survives `--gc-sections`; only
+     its export visibility changes, no emulation behaviour is affected. This is
+     the only change from the previous (v1.0) build of this binary.
 
 - **Reproduce the build** (from the extracted source root):
   ```
