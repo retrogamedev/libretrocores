@@ -241,6 +241,48 @@ All binaries and source archives are version **1.0**.
   native MIPS dynarec + libchdr. Output is `libs/arm64-v8a/libretro.so`, renamed
   to `libpcsx_rearmed_libretro.so`.)
 
+## ares (Mega Drive / Genesis) — `libares_md_libretro.so`
+
+- **Upstream:** https://github.com/ares-emulator/ares
+- **License:** ISC — see [LICENSE-ares.txt](LICENSE-ares.txt). (That file also
+  bundles the licenses of ares' vendored third-party libraries.)
+- **Source commit:** [`449b937`](https://github.com/ares-emulator/ares/commit/449b937)
+- **Source archive:**
+  [source/libares_md_libretro-v1.0.tar.gz](source/libares_md_libretro-v1.0.tar.gz)
+- **Local patches:** **already applied in the source archive.** The tarball is a
+  buildable standalone snapshot matching the shipped binary. ares ships no
+  libretro target of its own, so a thin libretro shim is bundled in-tree at
+  `ares-libretro/` and wired in through ares' top-level `CMakeLists.txt` in place
+  of the desktop frontend, with the build trimmed to the Mega Drive core and
+  pointed at ares' Linux toolchain config for the Android/arm64 cross-build. The
+  one cartridge-level change exposes the active battery save-RAM buffer to the
+  host — `saveData()`/`saveSize()` on the MD board interface plus the `linear`
+  and `standard` boards, and a `#pragma once` added to `nall/nall/decode/mmi.hpp`
+  — so battery saves can be read back and restored.
+- **Reproduce the build** (from the extracted source root):
+  ```
+  # 1) Build ares' `sourcery` resource compiler natively -- it is a host codegen
+  #    tool that runs on the build machine, not the Quest. (On macOS append
+  #    `-framework Foundation -framework Cocoa`.)
+  clang++ -std=c++20 -O2 -DNALL_HEADER_ONLY -I. -Inall \
+          tools/sourcery/sourcery.cpp -o build_native/sourcery
+  #    then write build_native/sourceryConfig.cmake importing that binary as an
+  #    IMPORTED `sourcery` target so ares' cross build finds it via find_package.
+
+  # 2) Cross-compile the Mega Drive core for Android arm64:
+  cmake -B build \
+        -DCMAKE_TOOLCHAIN_FILE=<Android NDK toolchain.cmake> \
+        -DANDROID_ABI=arm64-v8a \
+        -DANDROID_PLATFORM=android-24 \
+        -DARES_CROSSCOMPILING=ON \
+        -DARES_ENABLE_CHD=OFF \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-z,max-page-size=16384"
+  cmake --build build --target ares_md_libretro -j
+  llvm-strip --strip-unneeded <build>/ares-libretro/libares_md_libretro.so
+  ```
+  (Output is renamed to `libares_md_libretro.so`.)
+
 ## Manifest schema (`manifest.json`)
 
 ```json

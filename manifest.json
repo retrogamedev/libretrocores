@@ -84,6 +84,18 @@
       "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-pcsx.txt",
       "sha256": "1b8e4920f8d0c516835eec810ed013707c11761a7187a0326a9f9cfeb490caf8",
       "sizeBytes": 1579344
+    },
+    {
+      "id": "ares_md",
+      "displayName": "ares (Mega Drive)",
+      "system": "gen",
+      "fileName": "libares_md_libretro.so",
+      "version": "1.0",
+      "downloadUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/libares_md_libretro.so",
+      "sourceUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/source/libares_md_libretro-v1.0.tar.gz",
+      "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-ares.txt",
+      "sha256": "f65acfbfb0435f3dd601c529393a96da1732f69395d81748cb86837f6fd02ad0",
+      "sizeBytes": 4094720
     }
   ]
 }

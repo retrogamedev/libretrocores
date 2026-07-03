@@ -21,6 +21,7 @@ current binary).
 | `libbsnes_mercury_balanced_libretro.so` | Super Nintendo (SNES) | GPL v3 | [libretro/bsnes-mercury](https://github.com/libretro/bsnes-mercury) |
 | `libmupen64plus_next_libretro.so` | Nintendo 64 | GPL v3 | [libretro/mupen64plus-libretro-nx](https://github.com/libretro/mupen64plus-libretro-nx) |
 | `libpcsx_rearmed_libretro.so` | PlayStation (PS1) | GPL v2 | [libretro/pcsx_rearmed](https://github.com/libretro/pcsx_rearmed) |
+| `libares_md_libretro.so` | Sega Genesis / Mega Drive | ISC | [ares-emulator/ares](https://github.com/ares-emulator/ares) |
 
 All binaries are built for Android **arm64-v8a** (Meta Quest 3 / 3S / Pro). They
 are not portable to other platforms.
@@ -33,7 +34,7 @@ are not portable to other platforms.
 - `lib*_libretro.so` — the core binaries.
 - `LICENSE-mgba.txt`, `LICENSE-fceumm.txt`, `LICENSE-vice.txt`,
   `LICENSE-gearsystem.txt`, `LICENSE-bsnes.txt`, `LICENSE-mupen64.txt`,
-  `LICENSE-pcsx.txt` — full license text for each core.
+  `LICENSE-pcsx.txt`, `LICENSE-ares.txt` — full license text for each core.
 - `source/lib*_libretro-v1.0.tar.gz` — complete corresponding source for
   each binary at the commit it was built from. For VICE, Mupen64Plus-Next
   and PCSX-ReARMed, the project's build-time patches are pre-applied so the
