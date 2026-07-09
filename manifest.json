@@ -96,6 +96,18 @@
       "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-ares.txt",
       "sha256": "f65acfbfb0435f3dd601c529393a96da1732f69395d81748cb86837f6fd02ad0",
       "sizeBytes": 4094720
+    },
+    {
+      "id": "flycast",
+      "displayName": "Flycast",
+      "system": "dc",
+      "fileName": "libflycast_libretro.so",
+      "version": "1.0",
+      "downloadUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/libflycast_libretro.so",
+      "sourceUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/source/libflycast_libretro-v1.0.tar.gz",
+      "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-flycast.txt",
+      "sha256": "b47d08c401b66814ae0c5fda8afc8161371becdfa718fa1bed3183a62bd5aadf",
+      "sizeBytes": 22867272
     }
   ]
 }

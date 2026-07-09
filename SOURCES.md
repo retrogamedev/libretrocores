@@ -283,6 +283,46 @@ All binaries and source archives are version **1.0**.
   ```
   (Output is renamed to `libares_md_libretro.so`.)
 
+## Flycast (Dreamcast) — `libflycast_libretro.so`
+
+- **Upstream:** https://github.com/flyinghead/flycast
+- **License:** GPLv2 — see [LICENSE-flycast.txt](LICENSE-flycast.txt).
+- **Source commit:** [`e9b7fb651`](https://github.com/flyinghead/flycast/commit/e9b7fb651) (`v2.6-330-ge9b7fb651`)
+- **Source archive:**
+  [source/libflycast_libretro-v1.0.tar.gz](source/libflycast_libretro-v1.0.tar.gz)
+  — Flycast's own source only. Its dependencies are large third-party **git
+  submodules** (SDL, glslang, Vulkan-Headers, VulkanMemoryAllocator, oboe, libchdr,
+  luabridge, libadrenotools, rcheevos, ..., all listed in `.gitmodules`, ~527M),
+  each publicly available and pinned by the upstream commit below. They're excluded
+  from the archive (they'd exceed GitHub's per-file size limit); fetch them with:
+  ```
+  git clone --recurse-submodules https://github.com/flyinghead/flycast
+  cd flycast && git checkout e9b7fb651 && git submodule update --init --recursive
+  ```
+  then overlay this archive's patched sources (or just apply the patch below).
+- **Local patches:** **already applied in the source archive.** One patch, in
+  `core/hw/maple/maple_devs.cpp` (`maple_sega_vmu::OnSetup`): the VMU is only
+  reformatted when there was genuinely no existing card file, guarding the change
+  `if (sum == 0)` → `if (sum == 0 && rfile == nullptr)`. Without it, a maple device
+  reconnect (e.g. a controller/light-gun device change) that momentarily re-reads
+  an existing save as empty would reformat and blank it. No renderer or emulation
+  behaviour is changed.
+- **Reproduce the build** (from the extracted source root):
+  ```
+  cmake -S . -B build \
+        -DCMAKE_TOOLCHAIN_FILE=<Android NDK toolchain.cmake> \
+        -DANDROID_ABI=arm64-v8a \
+        -DANDROID_PLATFORM=android-24 \
+        -DLIBRETRO=ON \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-z,max-page-size=16384 -Wl,--no-as-needed -landroid -Wl,--as-needed"
+  cmake --build build -j
+  llvm-strip --strip-unneeded <build>/.../flycast_libretro.so
+  ```
+  (Output is renamed to `libflycast_libretro.so`. The `-landroid` link is required:
+  without it `ASharedMemory_create` is null at runtime and guest RAM allocation
+  fails, crashing after the Sega logo.)
+
 ## Manifest schema (`manifest.json`)
 
 ```json
