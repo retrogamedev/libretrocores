@@ -289,7 +289,7 @@ All binaries and source archives are version **1.0**.
 - **License:** GPLv2 — see [LICENSE-flycast.txt](LICENSE-flycast.txt).
 - **Source commit:** [`e9b7fb651`](https://github.com/flyinghead/flycast/commit/e9b7fb651) (`v2.6-330-ge9b7fb651`)
 - **Source archive:**
-  [source/libflycast_libretro-v1.0.tar.gz](source/libflycast_libretro-v1.0.tar.gz)
+  [source/libflycast_libretro-v1.1.tar.gz](source/libflycast_libretro-v1.1.tar.gz)
   — Flycast's own source only. Its dependencies are large third-party **git
   submodules** (SDL, glslang, Vulkan-Headers, VulkanMemoryAllocator, oboe, libchdr,
   luabridge, libadrenotools, rcheevos, ..., all listed in `.gitmodules`, ~527M),
@@ -300,13 +300,20 @@ All binaries and source archives are version **1.0**.
   cd flycast && git checkout e9b7fb651 && git submodule update --init --recursive
   ```
   then overlay this archive's patched sources (or just apply the patch below).
-- **Local patches:** **already applied in the source archive.** One patch, in
-  `core/hw/maple/maple_devs.cpp` (`maple_sega_vmu::OnSetup`): the VMU is only
-  reformatted when there was genuinely no existing card file, guarding the change
-  `if (sum == 0)` → `if (sum == 0 && rfile == nullptr)`. Without it, a maple device
-  reconnect (e.g. a controller/light-gun device change) that momentarily re-reads
-  an existing save as empty would reformat and blank it. No renderer or emulation
-  behaviour is changed.
+- **Local patches:** **already applied in the source archive.** Two patches, both in
+  `core/hw/maple/maple_devs.cpp`; neither changes renderer or emulation behaviour:
+  1. `maple_sega_vmu::OnSetup`: the VMU is only reformatted when there was genuinely
+     no existing card file, guarding the change `if (sum == 0)` →
+     `if (sum == 0 && rfile == nullptr)`. Without it, a maple device reconnect (e.g. a
+     controller/light-gun device change) that momentarily re-reads an existing save as
+     empty would reformat and blank it.
+  2. VMU write durability (new in v1.1): each VMU block write and `fullSave` is now
+     followed by `fflush` (folded into the existing write error check). Flycast writes
+     the memory card through a buffered stdio handle, so on an abrupt teardown the last
+     buffered write — typically the final phase of the FAT block — could be lost,
+     leaving a save whose data and directory reached disk but whose FAT chain was
+     truncated at a 128-byte boundary; the game then reads it back as "corrupted".
+     Flushing each write makes it durable immediately.
 - **Reproduce the build** (from the extracted source root):
   ```
   cmake -S . -B build \
