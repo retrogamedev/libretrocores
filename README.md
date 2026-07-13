@@ -36,9 +36,9 @@ are not portable to other platforms.
   `LICENSE-gearsystem.txt`, `LICENSE-bsnes.txt`, `LICENSE-mupen64.txt`,
   `LICENSE-pcsx.txt`, `LICENSE-ares.txt` — full license text for each core.
 - `source/lib*_libretro-v1.0.tar.gz` — complete corresponding source for
-  each binary at the commit it was built from. For VICE, Mupen64Plus-Next
-  and PCSX-ReARMed, the project's build-time patches are pre-applied so the
-  tarball is a buildable standalone snapshot.
+  each binary at the commit it was built from. For VICE, Mupen64Plus-Next,
+  PCSX-ReARMed and Gearsystem, the project's build-time patches are pre-applied
+  so the tarball is a buildable standalone snapshot.
 - `SOURCES.md` — upstream pointers, the exact commit each tarball was
   produced from, the VICE patches (with rationale), and reproduce-the-
   build instructions.
@@ -52,7 +52,7 @@ For mGBA (MPL 2.0) the source is included for parity even though MPL's
 source-availability requirements are file-level rather than whole-program.
 
 See [SOURCES.md](SOURCES.md) for upstream URLs, exact commits, and the
-VICE, Mupen64Plus-Next and PCSX-ReARMed patch sets.
+VICE, Mupen64Plus-Next, PCSX-ReARMed and Gearsystem patch sets.
 
 ## Building
 

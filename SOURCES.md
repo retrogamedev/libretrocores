@@ -112,8 +112,18 @@ All binaries and source archives are version **1.0**.
   (Gearsystem 3.9.9, +9 commits)
 - **Source archive:**
   [source/libgearsystem_libretro-v1.0.tar.gz](source/libgearsystem_libretro-v1.0.tar.gz)
-- **Local patches:** none. Built unmodified from upstream.
-- **Reproduce the build** (from the extracted source root):
+- **Local patches:** one RGDVR patch, pre-applied in this archive. It exposes
+  the SegaScope 3D glasses eye bit to the RetroGameDev VR host so SegaScope
+  titles (Space Harrier 3-D, Out Run 3-D, etc.) can render in true per-eye
+  stereo 3D on Quest. The patch adds a public `GetGlassesRegistry()` accessor on
+  `GearsystemCore` (forwarding `Input`'s glasses register) and, in
+  `platforms/libretro/libretro.cpp`, registers a getter with the frontend during
+  `retro_init` via a private environment command (`RETRO_ENVIRONMENT_PRIVATE |
+  6`). Any frontend that does not recognise that command returns false and the
+  registration is ignored, so the core still builds and runs as stock Gearsystem
+  everywhere else. No emulation behaviour changes.
+- **Reproduce the build** (from the extracted source root; the patch above is
+  already applied in this archive):
   ```
   ndk-build -C platforms/libretro/jni \
             NDK_PROJECT_PATH=platforms/libretro \
