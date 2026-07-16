@@ -269,8 +269,9 @@ archive filename).
 - **License:** ISC — see [LICENSE-ares.txt](LICENSE-ares.txt). (That file also
   bundles the licenses of ares' vendored third-party libraries.)
 - **Source commit:** [`449b937`](https://github.com/ares-emulator/ares/commit/449b937)
+- **Version:** 1.1 (see change notes below).
 - **Source archive:**
-  [source/libares_md_libretro-v1.0.tar.gz](source/libares_md_libretro-v1.0.tar.gz)
+  [source/libares_md_libretro-v1.1.tar.gz](source/libares_md_libretro-v1.1.tar.gz)
 - **Local patches:** **already applied in the source archive.** The tarball is a
   buildable standalone snapshot matching the shipped binary. ares ships no
   libretro target of its own, so a thin libretro shim is bundled in-tree at
@@ -280,7 +281,20 @@ archive filename).
   one cartridge-level change exposes the active battery save-RAM buffer to the
   host — `saveData()`/`saveSize()` on the MD board interface plus the `linear`
   and `standard` boards, and a `#pragma once` added to `nall/nall/decode/mmi.hpp`
-  — so battery saves can be read back and restored.
+  — so battery saves can be read back and restored. Two light-gun peripherals
+  (Konami Justifier, Sega Menacer) are added under `ares/md/controller/` and wired
+  into the controller port, sharing a small VDP hook that registers the aimed
+  pixel and, when the raster beam crosses it, raises the external interrupt and
+  re-latches the HV counter (so both live-read and M3 HV-latch games read the aim).
+  The shim also derives the console TV standard (NTSC/PAL) from the ROM header
+  region field instead of forcing NTSC.
+- **Change notes:**
+  - **1.1** — Menacer button/detection fix (buttons gated to the read strobe so the
+    peripheral ID stays valid while a button is held; fixes T2: The Arcade Game menu
+    detection), light-gun HV-counter re-latch on the light pulse (fixes Menacer aim
+    position), and header-derived region so PAL-only carts (e.g. Body Count) run at
+    50 Hz instead of locking out.
+  - **1.0** — Initial release.
 - **Reproduce the build** (from the extracted source root):
   ```
   # 1) Build ares' `sourcery` resource compiler natively -- it is a host codegen

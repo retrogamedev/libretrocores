@@ -90,12 +90,12 @@
       "displayName": "ares (Mega Drive)",
       "system": "gen",
       "fileName": "libares_md_libretro.so",
-      "version": "1.0",
+      "version": "1.1",
       "downloadUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/libares_md_libretro.so",
-      "sourceUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/source/libares_md_libretro-v1.0.tar.gz",
+      "sourceUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/source/libares_md_libretro-v1.1.tar.gz",
       "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-ares.txt",
-      "sha256": "f65acfbfb0435f3dd601c529393a96da1732f69395d81748cb86837f6fd02ad0",
-      "sizeBytes": 4094720
+      "sha256": "96c1b60281bf7ddefb8fed729526b6c703012b2c2ab31596c0cc6feb644dfef1",
+      "sizeBytes": 4095808
     },
     {
       "id": "flycast",
