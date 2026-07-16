@@ -5,7 +5,9 @@ Every binary has its complete corresponding source code shipped alongside
 it in [`source/`](source), in line with
 [GPL §3(a)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html#section3).
 
-All binaries and source archives are version **1.0**.
+Binaries and source archives are version **1.0** unless a core's entry below
+states otherwise (revised cores carry a higher version and a matching `-vN.N`
+archive filename).
 
 ## mGBA — `libmgba_libretro.so`
 
@@ -142,8 +144,18 @@ All binaries and source archives are version **1.0**.
   [LICENSE-bsnes.txt](LICENSE-bsnes.txt).
 - **Source commit:** [`ac0b6b1`](https://github.com/libretro/bsnes-mercury/commit/ac0b6b1)
 - **Source archive:**
-  [source/libbsnes_mercury_balanced_libretro-v1.0.tar.gz](source/libbsnes_mercury_balanced_libretro-v1.0.tar.gz)
-- **Local patches:** none. Built unmodified from upstream.
+  [source/libbsnes_mercury_balanced_libretro-v1.1.tar.gz](source/libbsnes_mercury_balanced_libretro-v1.1.tar.gz)
+- **Local patches:** **already applied in the source archive.** One patch;
+  the tarball is a buildable standalone snapshot matching the shipped binary.
+  Search the source for `RGDVR` to locate it. Summarised below for transparency.
+
+  1. `sfc/system/video.cpp` — makes `Video::draw_cursor()` an early return, so
+     the emulator's own on-screen light-gun crosshair (red for the Super Scope,
+     blue for the Justifier) is not drawn. The app renders its own VR aiming
+     reticle, so the core-drawn one is a redundant second crosshair over the
+     game. One-line change; the core is otherwise stock and still builds and
+     runs identically.
+
 - **Profile:** built with `PROFILE=balanced` (scanline-precision PPU). The
   jni `Android.mk` defaults to `performance`, so the profile must be passed
   explicitly or you'll get the wrong core.
