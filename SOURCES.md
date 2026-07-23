@@ -172,41 +172,54 @@ archive filename).
   `target-libretro/libs/arm64-v8a/libretro.so`, renamed to
   `libbsnes_mercury_balanced_libretro.so`.)
 
-## Mupen64Plus-Next + ParaLLEl-RDP — `libmupen64plus_next_libretro.so`
+## Mupen64Plus-Next + GLideN64: `libmupen64plus_next_libretro.so`
 
 - **Upstream:** https://github.com/libretro/mupen64plus-libretro-nx
-  (cloned with submodules — parallel-rdp / parallel-rsp).
-- **License:** GNU General Public License version 3 — see
+  (cloned with submodules).
+- **License:** GNU General Public License version 3, see
   [LICENSE-mupen64.txt](LICENSE-mupen64.txt). The mupen64plus core itself is
   GPLv2, but the libretro-nx bundle links additional GPLv3 plugins, so the
   combined binary is GPLv3.
 - **Source commit:** [`98c1b0d`](https://github.com/libretro/mupen64plus-libretro-nx/commit/98c1b0d877542b01314b3b04272282ba223b65b3)
 - **Source archive:**
   [source/libmupen64plus_next_libretro-v1.0.tar.gz](source/libmupen64plus_next_libretro-v1.0.tar.gz)
-- **Local patches:** **already applied in the source archive.** Three
-  patches; the tarball is a buildable standalone snapshot matching the
-  shipped binary. Search the source for `RGDVR` to locate the inline one.
-  The patches are summarised below for transparency.
+- **Renderer:** GLideN64 (OpenGL ES). The Vulkan ParaLLEl-RDP renderer and the
+  ParaLLEl (LLE) RSP are disabled for the arm64 build (see patch 4 below), so the
+  N64 path is GLideN64 + HLE RSP only. Earlier releases used ParaLLEl-RDP; moving
+  to GLideN64 removed the ~20 MB Vulkan renderer and its static-global teardown
+  hazards.
+- **Local patches:** already applied in the source archive. The tarball is a
+  buildable standalone snapshot matching the shipped binary. Search the source
+  for `RGDVR` to locate the inline changes. Summarised for transparency:
 
-  1. `libretro/libretro.c` — appends a `retro_swap_rom()` entry point for
-     in-process N64->N64 content switching. mupen64plus + parallel-RDP
-     cannot be deinit'd / re-init'd in one process, so switching ROMs needs
-     a true content swap (stop + close + open) with parallel left alive,
-     rather than a full core teardown.
+  1. `libretro/libretro.c`: appends a `retro_swap_rom()` entry point for
+     in-process N64 to N64 content switching, and adds an `"auto"` case to the
+     controller-pak selection that picks Memory Pak vs Rumble Pak per game from
+     the ROM settings (savetype None + mempak gives Memory Pak, else Rumble if
+     the game supports it).
 
-  2. `mupen64plus-video-paraLLEl/rdp.cpp` — fixes the re-init teardown
-     order in `RDP::init()`. It builds a new `Device` without first
-     releasing the objects owned by the old one (the CommandProcessor /
-     frontend, cached frame images, and timestamp query pools), which on a
-     second init outlive their Device and abort. The patch releases all
-     old-Device objects before `device.reset(new Device)`. One-line
-     insertion, no-op on first init.
-
-  3. `libretro-common/libco/aarch64.c` — full-file replacement adding the
-     callee-saved FP registers `d8`-`d15` to `co_switch_aarch64`. Upstream
-     saves `x19`-`x29` but not `d8`-`d15` (which AAPCS64 requires preserved
+  2. `libretro-common/libco/aarch64.c`: full-file replacement adding the
+     callee-saved FP registers `d8` to `d15` to `co_switch_aarch64`. Upstream
+     saves `x19` to `x29` but not `d8` to `d15` (which AAPCS64 requires preserved
      across a call), so a `double` / NEON local held across `retro_run()`'s
      co-switch is corrupted on return.
+
+  3. `GLideN64/src/FrameBuffer.cpp`: re-enables the `clearColorBuffer` at the end
+     of `FrameBuffer::init` (binding the FBO first). Upstream left it commented
+     out, so a freshly allocated framebuffer colour texture held uninitialised
+     VRAM; a game that samples a framebuffer for an effect on the same frame it
+     is first created (Ocarina of Time title-logo shimmer) showed one frame of
+     random-coloured garbage. ParaLLEl-RDP cleared its buffers, so this was a
+     GLideN64-only regression.
+
+  4. `libretro/jni/Android.mk`: sets `HAVE_PARALLEL_RSP = 0` and
+     `HAVE_PARALLEL_RDP = 0` for the arm64-v8a build, dropping the Vulkan
+     ParaLLEl-RDP renderer and the ParaLLEl LLE RSP from the core (GLideN64 +
+     HLE only).
+
+  A further inline change to `mupen64plus-video-paraLLEl/rdp.cpp` (a re-init
+  teardown-order fix) remains in the source tree for completeness but is no
+  longer compiled, since ParaLLEl-RDP is disabled by patch 4 above.
 
 - **Reproduce the build** (from the extracted source root):
   ```
@@ -219,6 +232,7 @@ archive filename).
   (ndk-build strips for release automatically. Output is
   `libretro/libs/arm64-v8a/libretro.so`, renamed to
   `libmupen64plus_next_libretro.so`.)
+
 
 ## PCSX-ReARMed — `libpcsx_rearmed_libretro.so`
 
