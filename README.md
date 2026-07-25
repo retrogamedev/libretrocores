@@ -55,9 +55,8 @@ VICE, Mupen64Plus-Next, PCSX-ReARMed and Gearsystem patch sets.
 
 ## Building
 
-These binaries are produced from the
-[RetroGameDev VR main repo](https://github.com/retrogamedev/retrogamedevvr)'s
-`LibretroCores/Makefile`. To reproduce a binary from a source tarball in
+These binaries are produced from the RetroGameDev VR main
+repository's `LibretroCores/Makefile`. To reproduce a binary from a source tarball in
 this repository, extract the tarball and follow the build commands in
 [SOURCES.md](SOURCES.md) for that core.
 
