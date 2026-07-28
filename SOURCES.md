@@ -217,6 +217,16 @@ archive filename).
      ParaLLEl-RDP renderer and the ParaLLEl LLE RSP from the core (GLideN64 +
      HLE only).
 
+  5. `mupen64plus-core/src/plugin/plugin.c`: falls back to the GLideN64 graphics
+     plugin if `plugin_connect_all()` would otherwise leave the global `gfx`
+     struct unassigned. The function selects the RDP plugin with a switch on
+     `current_rdp_type`; the angrylion and ParaLLEl cases are compiled out by
+     patch 4 above, and `RDP_PLUGIN_NONE` / `default` fall through, so those
+     paths left `gfx` as zeroed BSS. Nothing null-checks it, and `main_run()`
+     then calls `gfx.romOpen()` on a NULL pointer, crashing with a jump to
+     address 0. GLideN64 is the only renderer compiled into this build, so
+     defaulting to it is both safe and correct.
+
   A further inline change to `mupen64plus-video-paraLLEl/rdp.cpp` (a re-init
   teardown-order fix) remains in the source tree for completeness but is no
   longer compiled, since ParaLLEl-RDP is disabled by patch 4 above.
