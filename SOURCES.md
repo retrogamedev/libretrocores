@@ -252,8 +252,8 @@ archive filename).
   [LICENSE-pcsx.txt](LICENSE-pcsx.txt).
 - **Source commit:** [`d26eaee5`](https://github.com/libretro/pcsx_rearmed/commit/d26eaee5c8fb47c1832b8bf32c1358d625da8a02)
 - **Source archive:**
-  [source/libpcsx_rearmed_libretro-v1.0.tar.gz](source/libpcsx_rearmed_libretro-v1.0.tar.gz)
-- **Local patches:** **already applied in the source archive.** Two patches;
+  [source/libpcsx_rearmed_libretro-v1.2.tar.gz](source/libpcsx_rearmed_libretro-v1.2.tar.gz)
+- **Local patches:** **already applied in the source archive.** Four patches;
   the tarball is a buildable standalone snapshot matching the shipped binary.
   Search the source for `RGDVR` to locate them.
 
@@ -272,8 +272,25 @@ archive filename).
      adds `CdromId` to the `global:` list so the host can read the loaded
      disc's serial (SLES/SLUS/SCES/...) for per-game light-gun configuration.
      `CdromId` is referenced internally so it survives `--gc-sections`; only
-     its export visibility changes, no emulation behaviour is affected. This is
-     the only change from the previous (v1.0) build of this binary.
+     its export visibility changes, no emulation behaviour is affected.
+
+  3. `libpcsxcore/psxmem.h` — HLE BIOS scratchpad pointer fix. Upstream commit
+     `dd2225ab` made `psxm()` return a BIOS-ROM (`psxR`) pointer for scratchpad
+     addresses (0x1f800000..0x1f8003ff); the correct buffer is `psxH`
+     (scratchpad plus hardware registers, see `r3000a.h`). `psxm()` backs the
+     HLE BIOS `Ra0`/`Ra1` argument helpers, so any HLE call whose pointer
+     arguments live in scratchpad read zeros and wrote into the wrong buffer.
+     One-line change (`psxR` to `psxH`); new in the v1.2 build.
+
+  4. `libpcsxcore/psxbios.c` — deliver I/O-complete events from the HLE
+     `delete()` file call. On a real BIOS, `delete("bu00:...")` performs card
+     I/O and raises the completion events (HwCARD `f4000001` spec 4, SwCARD
+     `f0000011` spec 4). The HLE version finishes instantly and delivered
+     nothing, so games whose memory-card state machine polls those events
+     after every operation spin forever (Azure Dreams hangs after deleting
+     its write-probe file). The patch raises both events after each card
+     delete, mirroring the existing upstream `firstfile()` precedent; new in
+     the v1.2 build.
 
 - **Reproduce the build** (from the extracted source root):
   ```
