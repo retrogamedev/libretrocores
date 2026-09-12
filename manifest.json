@@ -108,6 +108,18 @@
       "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-flycast.txt",
       "sha256": "5ea68e91d7e356eeff90b6dae7379fdd13ecef68a7fe601879cfc60f3dc5ae2d",
       "sizeBytes": 22867416
+    },
+    {
+      "id": "stella",
+      "displayName": "Stella",
+      "system": "a26",
+      "fileName": "libstella_libretro.so",
+      "version": "1.0",
+      "downloadUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/libstella_libretro.so",
+      "sourceUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/source/libstella_libretro-v1.0.tar.gz",
+      "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-stella.txt",
+      "sha256": "ec80bd2dca571410a96cbf8fbcabc79bccc67b6ff4d48cf0e37b50e3b9e66ad2",
+      "sizeBytes": 6427096
     }
   ]
 }

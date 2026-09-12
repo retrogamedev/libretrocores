@@ -407,6 +407,54 @@ archive filename).
   without it `ASharedMemory_create` is null at runtime and guest RAM allocation
   fails, crashing after the Sega logo.)
 
+## Stella (Atari 2600) — `libstella_libretro.so`
+
+- **Upstream:** https://github.com/stella-emu/stella (mainline Stella; its
+  libretro port lives in-tree under `src/os/libretro`). This is NOT the old
+  `libretro/stella2014-libretro` fork.
+- **License:** GNU General Public License version 2 — see
+  [LICENSE-stella.txt](LICENSE-stella.txt).
+- **Source commit:** [`c65c845c8`](https://github.com/stella-emu/stella/commit/c65c845c8)
+  (`7.0-869-gc65c845c8`, master, 2026-09-10; untagged because the libretro
+  port's controller autodetect and modern bankswitching landed after the 7.0 tag).
+- **Source archive:**
+  [source/libstella_libretro-v1.0.tar.gz](source/libstella_libretro-v1.0.tar.gz)
+- **Local patches:** **already applied in the source archive.** Two small
+  toolchain-compatibility patches (the Unity NDK r27 ships clang 18 / libc++ 18,
+  which predate two C++20/23 library and language features Stella uses) plus
+  one paddle-input fix. Search the source for `RGDVR:` to locate them.
+  1. `src/common/Variant.hxx` — libc++ 18 has no floating-point
+     `std::from_chars` (it arrived in LLVM 20). The float and double
+     string-parse branches use `std::strtof` / `std::strtod` on a
+     null-terminated copy instead. Integer `from_chars` elsewhere is untouched.
+  2. `src/common/StellaKeys.hxx`, `src/emucore/tia/TIA.cxx` —
+     `Bitmask::Enum{x}` deduces through an alias template (C++20 alias CTAD),
+     which clang supports only from version 19. Rewritten to the class template
+     spelling `Bitmask::BitmaskEnum{x}`, which has an explicit deduction guide
+     and is already used elsewhere in the same file.
+  3. `src/emucore/Paddles.cxx` — paddle position sync. Stella keeps the
+     analog-axis paddle position and the digital/mouse position (`myPosition`)
+     separately, applying the analog one only on frames where the axis value
+     changes and the digital one otherwise. With a thumbstick driving the axis
+     in relative mode the axis goes static on release, so the pot snapped back
+     to the stale digital position. Two inserted lines write the analog
+     position into `myPosition` whenever the analog path applies it, so a
+     released stick leaves the paddle where it is; two more gate the digital
+     (d-pad) paddle events on the analog axis being at rest, so a stick held
+     still in absolute mode doesn't creep the paddle. No effect when no analog
+     axis is in use.
+- **Reproduce the build** (from the extracted source root):
+  ```
+  ndk-build -C src/os/libretro/jni \
+            NDK_PROJECT_PATH=src/os/libretro \
+            APP_ABI=arm64-v8a \
+            APP_PLATFORM=android-24 \
+            APP_LDFLAGS="-Wl,-z,max-page-size=16384"
+  ```
+  (ndk-build strips for release automatically. Output `libretro.so` is renamed
+  to `libstella_libretro.so`. Requires a C++23-capable NDK clang; NDK r27 / clang
+  18 was used.)
+
 ## Manifest schema (`manifest.json`)
 
 ```json

@@ -21,6 +21,8 @@ archive is republished under a new `-vN.N` filename matching that version.
 | `libmupen64plus_next_libretro.so` | Nintendo 64 | GPL v3 | [libretro/mupen64plus-libretro-nx](https://github.com/libretro/mupen64plus-libretro-nx) |
 | `libpcsx_rearmed_libretro.so` | PlayStation (PS1) | GPL v2 | [libretro/pcsx_rearmed](https://github.com/libretro/pcsx_rearmed) |
 | `libares_md_libretro.so` | Sega Genesis / Mega Drive | ISC | [ares-emulator/ares](https://github.com/ares-emulator/ares) |
+| `libflycast_libretro.so` | Sega Dreamcast | GPL v2 | [flyinghead/flycast](https://github.com/flyinghead/flycast) |
+| `libstella_libretro.so` | Atari 2600 | GPL v2 | [stella-emu/stella](https://github.com/stella-emu/stella) |
 
 All binaries are built for Android **arm64-v8a** (Meta Quest 3 / 3S / Pro). They
 are not portable to other platforms.
@@ -33,7 +35,8 @@ are not portable to other platforms.
 - `lib*_libretro.so` — the core binaries.
 - `LICENSE-mgba.txt`, `LICENSE-fceumm.txt`, `LICENSE-vice.txt`,
   `LICENSE-gearsystem.txt`, `LICENSE-bsnes.txt`, `LICENSE-mupen64.txt`,
-  `LICENSE-pcsx.txt`, `LICENSE-ares.txt` — full license text for each core.
+  `LICENSE-pcsx.txt`, `LICENSE-ares.txt`, `LICENSE-flycast.txt`,
+  `LICENSE-stella.txt` — full license text for each core.
 - `source/lib*_libretro-vN.N.tar.gz` — complete corresponding source for
   each binary at the commit it was built from. Where a core carries the
   project's build-time patches, they are pre-applied so the tarball is a
