@@ -252,8 +252,8 @@ archive filename).
   [LICENSE-pcsx.txt](LICENSE-pcsx.txt).
 - **Source commit:** [`d26eaee5`](https://github.com/libretro/pcsx_rearmed/commit/d26eaee5c8fb47c1832b8bf32c1358d625da8a02)
 - **Source archive:**
-  [source/libpcsx_rearmed_libretro-v1.2.tar.gz](source/libpcsx_rearmed_libretro-v1.2.tar.gz)
-- **Local patches:** **already applied in the source archive.** Four patches;
+  [source/libpcsx_rearmed_libretro-v1.3.tar.gz](source/libpcsx_rearmed_libretro-v1.3.tar.gz)
+- **Local patches:** **already applied in the source archive.** Five patches;
   the tarball is a buildable standalone snapshot matching the shipped binary.
   Search the source for `RGDVR` to locate them.
 
@@ -291,6 +291,17 @@ archive filename).
      its write-probe file). The patch raises both events after each card
      delete, mirroring the existing upstream `firstfile()` precedent; new in
      the v1.2 build.
+
+  5. `libpcsxcore/psxbios.c` — clear the memory card's "new card" flag after
+     `firstfile()`. On a real BIOS, reading the card directory (`bu_init`)
+     checks the "MC" header and then test-writes sector 0x3F, and it is that
+     write which clears the card's new-card flag, so the next `_card_info`
+     reports 4 (ok). The HLE `firstfile()` only scans the in-memory card and
+     left the flag set, so `_card_info` kept answering 2000 (new card) until
+     an actual write. Games that wait for 4 before writing (Xenogears loops
+     `_card_info`/`firstfile` at every save point and reports the card as
+     unformatted) never got there. Two one-line additions after the
+     `bufile()` calls in `firstfile()`, one per card; new in the v1.3 build.
 
 - **Reproduce the build** (from the extracted source root):
   ```
