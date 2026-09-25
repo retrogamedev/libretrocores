@@ -1,2 +1,9 @@
 # macOS Finder metadata
 .DS_Store
+# MAME: 60 MB binary, distributed as a GitHub Release asset (see README), never in git history
+libmame_libretro.so
+libmame_libretro.so.gz
+mame-sets.json
+mame-plugins.zip
+# Staging area for Release assets (make mame + packaging write here)
+releases/

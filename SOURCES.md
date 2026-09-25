@@ -466,6 +466,67 @@ archive filename).
   to `libstella_libretro.so`. Requires a C++23-capable NDK clang; NDK r27 / clang
   18 was used.)
 
+## MAME (Arcade) — `libmame_libretro.so`
+
+- **Upstream:** https://github.com/libretro/mame (mainline MAME with its
+  libretro OSD in-tree under `src/osd/libretro`; tracks upstream
+  [mamedev/mame](https://github.com/mamedev/mame)). NOT one of the
+  `mame2003` / `mame2010` / `mame2016` snapshots.
+- **License:** GNU General Public License version 2 (MAME as a whole), with
+  individual files under BSD-3-Clause and other permissive licenses as noted
+  in their headers — see [LICENSE-mame.txt](LICENSE-mame.txt) (MAME's
+  `COPYING` plus the GPL-2.0 and BSD-3-Clause texts from `docs/legal`).
+- **Source commit:** [`4fc9a931`](https://github.com/libretro/mame/commit/4fc9a931)
+  (libretro/mame `master`, 2026-09-04).
+- **Distribution:** this core is NOT stored in the repository. The binary is
+  60 MB and would bloat git history on every rebuild, so the binary (gzipped),
+  the supported-set list and the source archive are attached to the GitHub
+  Release tagged `mame-v1.0`; `manifest.json` points at those assets.
+  - `libmame_libretro.so.gz` — the core, gzip-compressed. The manifest entry
+    carries `"compression": "gzip"`; its `sha256` / `sizeBytes` describe the
+    `.gz` and the app inflates after verifying.
+  - `mame-sets.json` — the ROM sets this build supports (name, title, parent,
+    BIOS / not-working flags), generated from the build's own driver list by
+    `LibretroCores/tools/mame-setlist.py`. Referenced by `setListUrl`.
+  - `mame-plugins.zip`: MAME's own Lua plugin files, taken unmodified from
+    the `plugins/` directory of the same source tree: the `hiscore` plugin
+    (`init.lua`, `plugin.json`, `sort_hiscore.lua` and `hiscore.dat`), the
+    `json` module it requires, and `boot.lua`, the plugin bootstrap. The app
+    unpacks it into MAME's plugin path and enables `hiscore`, which gives
+    persistent high scores to boards with no battery-backed RAM. Built by
+    `make mame-plugins` (reproducible: file mtimes are pinned, so the digest
+    changes only when the contents do). Referenced by `pluginsUrl`, verified
+    against `pluginsSha256`. Licences, per the file headers: `hiscore/init.lua`
+    CC0; `json/init.lua` MIT (its `LICENSE` is included in the zip);
+    `boot.lua` BSD-3-Clause; `hiscore.dat` carries no licence header and is
+    distributed here exactly as it is in the MAME repository.
+  - `libmame_libretro-v1.0.tar.gz` — complete corresponding source.
+- **Source archive:** `libmame_libretro-v1.0.tar.gz` on the `mame-v1.0`
+  Release (the full `libretro/mame` tree at the commit above, minus `.git`
+  and build output; ~216 MB).
+- **Local patches:** none. Built unmodified from upstream.
+- **Curated driver set.** Not a full arcade build: the binary contains only
+  the drivers listed in `MAME_DRIVERS` in `LibretroCores/Makefile` (43 driver
+  source files: Namco, Nintendo (incl. Vs. System), Midway 8080, Atari, Williams,
+  Taito (incl. Operation Wolf), Konami (incl. Lethal Enforcers, System GX), Namco NB-1 (Point Blank), Capcom incl. CPS1/CPS2, Neo Geo, Sega
+  System 1/16/Out Run, Irem, Data East, Tecmo, Technos, Toaplan). `mame-sets.json` is the
+  authoritative list.
+- **Reproduce the build** (from the extracted source root, macOS host; the
+  Unity NDK r27 / clang 18 in `ANDROID_NDK_HOME`):
+  ```
+  make -j10 REGENIE=1 VERBOSE=1 NOWERROR=1 OSD=retro CONFIG=libretro OPTIMIZE=s \
+       NO_USE_MIDI=1 NO_USE_PORTAUDIO=1 PYTHON_EXECUTABLE=python3 \
+       TARGETOS=android-arm64 gcc=android-arm64 PLATFORM=arm64 ARCHITECTURE= \
+       TARGET=mame SUBTARGET=rgdvr \
+       SOURCES=<the MAME_DRIVERS list, comma-separated, as src/mame/<vendor>/<driver>.cpp> \
+       LDOPTS="-Wl,-z,max-page-size=16384 -Wl,--version-script=src/osd/libretro/libretro-internal/link.T -Wl,--gc-sections" \
+       android-arm64
+  llvm-strip --strip-unneeded rgdvr_libretro_android.dylib   # GENie names the Android ELF by host OS
+  ```
+  Output is renamed to `libmame_libretro.so` and gzipped (`gzip -9 -n`).
+  The explicit `android-arm64` goal and `ARCHITECTURE=` work around MAME's
+  default goal appending the host compiler suffix on Apple Silicon.
+
 ## Manifest schema (`manifest.json`)
 
 ```json
@@ -481,8 +542,10 @@ archive filename).
       "downloadUrl": "<URL to the .so>",
       "sourceUrl":   "<URL to the source archive>",
       "licenseUrl":  "<URL to the license text>",
-      "sha256":      "<lowercase hex sha256 of the .so>",
-      "sizeBytes":   <integer byte count>
+      "sha256":      "<lowercase hex sha256 of the downloaded file>",
+      "sizeBytes":   <integer byte count of the downloaded file>,
+      "compression": "<optional: \"gzip\" when downloadUrl serves the .so gzipped; sha256/sizeBytes then describe the .gz>",
+      "setListUrl":  "<optional: URL of the core's supported-set list (MAME: mame-sets.json), installed with the core>"
     }
   ]
 }
