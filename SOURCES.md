@@ -486,8 +486,12 @@ archive filename).
     carries `"compression": "gzip"`; its `sha256` / `sizeBytes` describe the
     `.gz` and the app inflates after verifying.
   - `mame-sets.json` — the ROM sets this build supports (name, title, parent,
-    BIOS / not-working flags), generated from the build's own driver list by
-    `LibretroCores/tools/mame-setlist.py`. Referenced by `setListUrl`.
+    BIOS / not-working flags and, from format 2, the CRC32s of the files each
+    set's zip must hold itself, which the app checks uploads against),
+    generated from the build's own driver list by
+    `LibretroCores/tools/mame-setlist.py` (`make mame-sets` regenerates it
+    without rebuilding the core). Referenced by `setListUrl`. Format 2
+    replaced the format 1 asset on this release on 2026-10-06; same core.
   - `mame-plugins.zip`: MAME's own Lua plugin files, taken unmodified from
     the `plugins/` directory of the same source tree: the `hiscore` plugin
     (`init.lua`, `plugin.json`, `sort_hiscore.lua` and `hiscore.dat`), the
