@@ -126,16 +126,16 @@
       "displayName": "MAME",
       "system": "arcade",
       "fileName": "libmame_libretro.so",
-      "version": "1.0",
-      "downloadUrl": "https://github.com/retrogamedev/libretrocores/releases/download/mame-v1.0/libmame_libretro.so.gz",
+      "version": "1.1",
+      "downloadUrl": "https://github.com/retrogamedev/libretrocores/releases/download/mame-v1.1/libmame_libretro.so.gz",
       "compression": "gzip",
-      "setListUrl": "https://github.com/retrogamedev/libretrocores/releases/download/mame-v1.0/mame-sets.json",
-      "pluginsUrl": "https://github.com/retrogamedev/libretrocores/releases/download/mame-v1.0/mame-plugins.zip",
+      "setListUrl": "https://github.com/retrogamedev/libretrocores/releases/download/mame-v1.1/mame-sets.json",
+      "pluginsUrl": "https://github.com/retrogamedev/libretrocores/releases/download/mame-v1.1/mame-plugins.zip",
       "pluginsSha256": "2c1e32a1b10c2168ff0b3ea458bd00046a13cc1291a9306e2f9867392d773ed9",
-      "sourceUrl": "https://github.com/retrogamedev/libretrocores/releases/download/mame-v1.0/libmame_libretro-v1.0.tar.gz",
+      "sourceUrl": "https://github.com/retrogamedev/libretrocores/releases/download/mame-v1.1/libmame_libretro-v1.1.tar.gz",
       "licenseUrl": "https://raw.githubusercontent.com/retrogamedev/libretrocores/main/LICENSE-mame.txt",
-      "sha256": "3aaa670060d7d5081b459e5c3b356184d2d6939b0b2918926f82f85f7ab12a43",
-      "sizeBytes": 14867518
+      "sha256": "30cdd53a2c111d939f71f2bb4a70efdc1bbc204c06aab8db7db72a4e8bcc36bd",
+      "sizeBytes": 16087851
     }
   ]
 }

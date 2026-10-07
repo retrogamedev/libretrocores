@@ -481,7 +481,8 @@ archive filename).
 - **Distribution:** this core is NOT stored in the repository. The binary is
   60 MB and would bloat git history on every rebuild, so the binary (gzipped),
   the supported-set list and the source archive are attached to the GitHub
-  Release tagged `mame-v1.0`; `manifest.json` points at those assets.
+  Release tagged `mame-v1.1` (v1.0 was the first release); `manifest.json`
+  points at those assets.
   - `libmame_libretro.so.gz` — the core, gzip-compressed. The manifest entry
     carries `"compression": "gzip"`; its `sha256` / `sizeBytes` describe the
     `.gz` and the app inflates after verifying.
@@ -504,16 +505,27 @@ archive filename).
     CC0; `json/init.lua` MIT (its `LICENSE` is included in the zip);
     `boot.lua` BSD-3-Clause; `hiscore.dat` carries no licence header and is
     distributed here exactly as it is in the MAME repository.
-  - `libmame_libretro-v1.0.tar.gz` — complete corresponding source.
-- **Source archive:** `libmame_libretro-v1.0.tar.gz` on the `mame-v1.0`
-  Release (the full `libretro/mame` tree at the commit above, minus `.git`
-  and build output; ~216 MB).
-- **Local patches:** none. Built unmodified from upstream.
+  - `libmame_libretro-v1.1.tar.gz` — complete corresponding source, with the
+    local patch below applied.
+- **Source archive:** `libmame_libretro-v1.1.tar.gz` on the `mame-v1.1`
+  Release (the full `libretro/mame` tree at the commit above with the patch
+  below applied, minus `.git` and build output; ~216 MB). v1.0 shipped
+  `libmame_libretro-v1.0.tar.gz`, the unmodified tree.
+- **Local patches (v1.1):** one, applied at build time by
+  `LibretroCores/tools/mame-patch.sh` in the app repo and present in the
+  source archive (every change is marked `RGDVR`):
+  - `mame_crosshair` core option (enabled / disabled) in the libretro OSD:
+    `src/osd/libretro/libretro-internal/libretro_shared.h`, `retro_init.cpp`,
+    `libretro.cpp`, `libretro_core_options.h` and
+    `src/osd/modules/input/input_retro.cpp`. MAME draws its own crosshair for
+    light gun and crosshair-analog inputs (mode AUTO by default); the option
+    sets that mode to AUTO or OFF each frame so the app's reticle setting
+    controls it, as it does for the other gun-capable cores.
 - **Curated driver set.** Not a full arcade build: the binary contains only
-  the drivers listed in `MAME_DRIVERS` in `LibretroCores/Makefile` (43 driver
-  source files: Namco, Nintendo (incl. Vs. System), Midway 8080, Atari, Williams,
-  Taito (incl. Operation Wolf), Konami (incl. Lethal Enforcers, System GX), Namco NB-1 (Point Blank), Capcom incl. CPS1/CPS2, Neo Geo, Sega
-  System 1/16/Out Run, Irem, Data East, Tecmo, Technos, Toaplan). `mame-sets.json` is the
+  the drivers listed in `MAME_DRIVERS` in `LibretroCores/Makefile` (57 driver
+  source files from v1.1, 43 in v1.0: Namco (incl. System 2, Pole Position), Nintendo (incl. Vs. System), Midway 8080, Bally Midway MCR,
+  Atari (incl. Gauntlet, System 2), Williams, Taito (incl. Operation Wolf, Operation Thunderbolt, Z System), Konami (incl. Lethal Enforcers, System GX, TMNT, The Simpsons), Namco NB-1 (Point Blank), Capcom incl. CPS1/CPS2, Neo Geo, Sega
+  System 1/16/18, Hang-On, Out Run, X Board, Irem (incl. M72), Data East, Tecmo, Technos, Toaplan). `mame-sets.json` is the
   authoritative list.
 - **Reproduce the build** (from the extracted source root, macOS host; the
   Unity NDK r27 / clang 18 in `ANDROID_NDK_HOME`):
