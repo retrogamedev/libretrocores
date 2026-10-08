@@ -491,8 +491,11 @@ archive filename).
     set's zip must hold itself, which the app checks uploads against),
     generated from the build's own driver list by
     `LibretroCores/tools/mame-setlist.py` (`make mame-sets` regenerates it
-    without rebuilding the core). Referenced by `setListUrl`. Format 2
-    replaced the format 1 asset on this release on 2026-10-06; same core.
+    without rebuilding the core). Referenced by `setListUrl`. Format 3
+    (2026-10-08) added the device ROM sets a split romset ships as separate
+    zips (`model1io`, `namco51`, `cchip`, `qsound`...), replacing the format
+    2 asset on this release; same core. (Format 2 had likewise replaced
+    format 1 on `mame-v1.0`.)
   - `mame-plugins.zip`: MAME's own Lua plugin files, taken unmodified from
     the `plugins/` directory of the same source tree: the `hiscore` plugin
     (`init.lua`, `plugin.json`, `sort_hiscore.lua` and `hiscore.dat`), the
