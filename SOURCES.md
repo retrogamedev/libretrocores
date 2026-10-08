@@ -481,8 +481,8 @@ archive filename).
 - **Distribution:** this core is NOT stored in the repository. The binary is
   60 MB and would bloat git history on every rebuild, so the binary (gzipped),
   the supported-set list and the source archive are attached to the GitHub
-  Release tagged `mame-v1.1` (v1.0 was the first release); `manifest.json`
-  points at those assets.
+  Release tagged `mame-v1.2` (v1.0 and v1.1 were earlier releases);
+  `manifest.json` points at those assets.
   - `libmame_libretro.so.gz` — the core, gzip-compressed. The manifest entry
     carries `"compression": "gzip"`; its `sha256` / `sizeBytes` describe the
     `.gz` and the app inflates after verifying.
@@ -493,9 +493,9 @@ archive filename).
     `LibretroCores/tools/mame-setlist.py` (`make mame-sets` regenerates it
     without rebuilding the core). Referenced by `setListUrl`. Format 3
     (2026-10-08) added the device ROM sets a split romset ships as separate
-    zips (`model1io`, `namco51`, `cchip`, `qsound`...), replacing the format
-    2 asset on this release; same core. (Format 2 had likewise replaced
-    format 1 on `mame-v1.0`.)
+    zips (`model1io`, `m1comm`, `namco51`, `cchip`, `qsound`...). It first
+    replaced the format 2 asset on `mame-v1.1`; v1.2 ships it from the
+    start. (Format 2 had likewise replaced format 1 on `mame-v1.0`.)
   - `mame-plugins.zip`: MAME's own Lua plugin files, taken unmodified from
     the `plugins/` directory of the same source tree: the `hiscore` plugin
     (`init.lua`, `plugin.json`, `sort_hiscore.lua` and `hiscore.dat`), the
@@ -508,13 +508,13 @@ archive filename).
     CC0; `json/init.lua` MIT (its `LICENSE` is included in the zip);
     `boot.lua` BSD-3-Clause; `hiscore.dat` carries no licence header and is
     distributed here exactly as it is in the MAME repository.
-  - `libmame_libretro-v1.1.tar.gz` — complete corresponding source, with the
-    local patch below applied.
-- **Source archive:** `libmame_libretro-v1.1.tar.gz` on the `mame-v1.1`
-  Release (the full `libretro/mame` tree at the commit above with the patch
-  below applied, minus `.git` and build output; ~216 MB). v1.0 shipped
-  `libmame_libretro-v1.0.tar.gz`, the unmodified tree.
-- **Local patches (v1.1):** one, applied at build time by
+  - `libmame_libretro-v1.2.tar.gz` — complete corresponding source, with the
+    local patches below applied.
+- **Source archive:** `libmame_libretro-v1.2.tar.gz` on the `mame-v1.2`
+  Release (the full `libretro/mame` tree at the commit above with the patches
+  below applied, minus `.git` and build output; ~216 MB). v1.1 shipped the
+  same tree with the first patch only; v1.0 the unmodified tree.
+- **Local patches:** applied at build time by
   `LibretroCores/tools/mame-patch.sh` in the app repo and present in the
   source archive (every change is marked `RGDVR`):
   - `mame_crosshair` core option (enabled / disabled) in the libretro OSD:
@@ -523,10 +523,18 @@ archive filename).
     `src/osd/modules/input/input_retro.cpp`. MAME draws its own crosshair for
     light gun and crosshair-analog inputs (mode AUTO by default); the option
     sets that mode to AUTO or OFF each frame so the app's reticle setting
-    controls it, as it does for the other gun-capable cores.
+    controls it, as it does for the other gun-capable cores. (v1.1)
+  - `mame_view` core option (a MAME view name prefix, default "auto") in
+    the libretro OSD, and applying MAME's `-view` option at window creation:
+    `libretro_shared.h`, `retro_init.cpp`, `libretro.cpp`,
+    `libretro_core_options.h` and `src/osd/libretro/window.cpp`. Other MAME
+    front ends apply the view option through `set_starting_view()`; the
+    libretro OSD defined it but never called it, so a game's layout always
+    showed its first view (Virtua Racing: "Wide (16:9)" only). "auto"
+    resolves to the same view as before; the app serves a name per game. (v1.2)
 - **Curated driver set.** Not a full arcade build: the binary contains only
-  the drivers listed in `MAME_DRIVERS` in `LibretroCores/Makefile` (57 driver
-  source files from v1.1, 43 in v1.0: Namco (incl. System 2, Pole Position), Nintendo (incl. Vs. System), Midway 8080, Bally Midway MCR,
+  the drivers listed in `MAME_DRIVERS` in `LibretroCores/Makefile` (58 driver
+  source files from v1.2: v1.1 had 57, v1.0 43: Sega Model 1 (Virtua Racing, Star Wars Arcade, Wing War), Namco (incl. System 2, Pole Position), Nintendo (incl. Vs. System), Midway 8080, Bally Midway MCR,
   Atari (incl. Gauntlet, System 2), Williams, Taito (incl. Operation Wolf, Operation Thunderbolt, Z System), Konami (incl. Lethal Enforcers, System GX, TMNT, The Simpsons), Namco NB-1 (Point Blank), Capcom incl. CPS1/CPS2, Neo Geo, Sega
   System 1/16/18, Hang-On, Out Run, X Board, Irem (incl. M72), Data East, Tecmo, Technos, Toaplan). `mame-sets.json` is the
   authoritative list.
